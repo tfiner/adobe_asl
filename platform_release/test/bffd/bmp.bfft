@@ -1,0 +1,54 @@
+struct header_t
+{
+    unsigned 8  big    magic_number[2];
+    unsigned 32 little file_size;
+    unsigned 16 little creator1;
+    unsigned 16 little creator2;
+    unsigned 32 little bmp_offset;
+
+    invariant ok_magic_number str(@magic_number) == 'BM';
+}
+
+struct dib_t
+{
+    unsigned 32 little header_size;
+
+    if (header_size == 12)
+    {
+        unsigned 16 little width tell;
+        unsigned 16 little height tell;
+        unsigned 16 little color_plane_count;
+        unsigned 16 little bpp tell;
+    }
+    else if (header_size == 40)
+    {
+        unsigned 32 little width tell;
+        unsigned 32 little height tell;
+        unsigned 16 little color_plane_count;
+        unsigned 16 little bpp tell;
+        unsigned 32 little compression_method;
+        unsigned 32 little image_size;
+        unsigned 32 little h_res;
+        unsigned 32 little v_res;
+        unsigned 32 little color_palette_count;
+        unsigned 32 little important_color_count; // generally ignored
+    }
+}
+
+struct pixel_row_t
+{
+    const pixel_size   dib_header.width * (dib_header.bpp / 8);
+    const padding_size dib_header.width % 4;
+
+    unsigned 8 big pixels[pixel_size] tell;
+
+    if (padding_size != 0)
+        skip padding padding_size;
+}
+
+struct main
+{
+    struct header_t    header;
+    struct dib_t       dib_header;
+    struct pixel_row_t pixel_row_set[dib_header.height] @ header.bmp_offset;
+}

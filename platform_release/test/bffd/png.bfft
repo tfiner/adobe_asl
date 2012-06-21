@@ -1,0 +1,100 @@
+struct header_t
+{
+    unsigned 8 big signature[8];
+
+    invariant is_high_bit_ok  signature[0] == 137;
+    invariant is_p            signature[1] == 80; // 'P'
+    invariant is_n            signature[2] == 78; // 'N'
+    invariant is_g            signature[3] == 71; // 'G'
+    invariant is_dos_le1      signature[4] == 13; // 0x0D
+    invariant is_dos_le2      signature[5] == 10; // 0x0A
+    invariant is_dos_eof_char signature[6] == 26; // 0x1A
+    invariant is_unix_le      signature[7] == 10; // 0x0A
+}
+
+struct ihdr_t
+{
+    unsigned 32 big width;
+    unsigned 32 big height;
+    unsigned 8  big bit_depth;
+    unsigned 8  big color_type;
+    unsigned 8  big compression_method;
+    unsigned 8  big filter_method;
+    unsigned 8  big interlace_method;
+}
+
+struct palette_entry_t
+{
+    unsigned 8 big red;
+    unsigned 8 big green;
+    unsigned 8 big blue;
+}
+
+struct plte_t
+{
+    invariant valid_chunk_length length % 3 == 0;
+
+    const palette_entry_count length / 3;
+    struct palette_entry_t palette_set[palette_entry_count];
+}
+
+struct text_t
+{
+    unsigned 8 big keyword while { size: 8, value: 0 };
+    unsigned 8 big null_byte;
+    unsigned 8 big text[length - sizeof(@keyword, @null_byte)];
+
+    invariant is_null_byte null_byte == 0;
+}
+
+struct itxt_t
+{
+    unsigned 8 big keyword while { size: 8, value: 0 };
+    unsigned 8 big null_byte1;
+    unsigned 8 big compression_flag;
+    unsigned 8 big compression_method;
+    unsigned 8 big language_tag while  { size: 8, value: 0 };
+    unsigned 8 big null_byte2;
+    unsigned 8 big translated_keyword while  { size: 8, value: 0 };
+    unsigned 8 big null_byte3;
+    unsigned 8 big text[length - sizeof(@keyword, @null_byte3)];
+
+    invariant is_null_byte1 null_byte1 == 0;
+    invariant is_null_byte2 null_byte2 == 0;
+    invariant is_null_byte3 null_byte3 == 0;
+}
+
+struct chunk_t
+{
+    unsigned 32 big length;
+    unsigned 32 big type;
+
+    const type0 byte(startof(@type));
+    const type1 byte(startof(@type) + 1);
+    const type2 byte(startof(@type) + 2);
+    const type3 byte(startof(@type) + 3);
+
+    const     is_critical_chunk   type0 >= 65 && type0 <= 90;  // 'A' to 'Z'
+    const     is_public_chunk     type1 >= 65 && type1 <= 90;  // 'A' to 'Z'
+    invariant is_uppercase        type2 >= 65 && type2 <= 90;  // 'A' to 'Z'
+    const     is_copyable_chunk   type3 >= 97 && type3 <= 122; // 'a' to 'z'
+
+    notify "found ", str(@type), " @ ", startof(@length);
+
+    if (str(@type) == 'IHDR')      struct ihdr_t ihdr;
+    else if (str(@type) == 'PLTE') struct plte_t plte;
+    else if (str(@type) == 'tEXt') struct text_t text;
+    else if (str(@type) == 'iTXt') struct itxt_t itxt;
+    else if (length != 0)          skip unexamined length;
+
+    unsigned 32 big crc;
+}
+
+struct main
+{
+    struct header_t header;
+    struct chunk_t  chunk_set while card(@chunk_set) == 0 ||
+                                    chunk_set[card(@chunk_set) - 1].type != 1229278788; // IEND = 0x49 0x45 0x4E 0x44
+
+    invariant is_IHDR_first chunk_set[0].type == 1229472850; // IHDR = 0x49 0x48 0x44 0x52
+}

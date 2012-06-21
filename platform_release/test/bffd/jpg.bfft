@@ -1,0 +1,130 @@
+struct header_t
+{
+    unsigned 16 big soi; // start of image marker
+
+    invariant is_soi soi == 0xFFD8;
+}
+
+struct footer_t
+{
+    unsigned 16 big eoi; // end of stream marker
+
+    invariant is_eoi eoi == 0xFFD9;
+}
+
+struct ifd_entry_t
+{
+    unsigned 16 BE_k tag_number;
+    unsigned 16 BE_k field_type;
+    unsigned 32 BE_k component_count;
+    unsigned 32 BE_k data_or_offset;
+
+    const field_type_size field_type == 1  ? 1 :
+                          field_type == 2  ? 1 :
+                          field_type == 3  ? 2 :
+                          field_type == 4  ? 4 :
+                          field_type == 5  ? 8 :
+                          field_type == 6  ? 1 :
+                          field_type == 7  ? 1 :
+                          field_type == 8  ? 2 :
+                          field_type == 9  ? 4 :
+                          field_type == 10 ? 8 :
+                          field_type == 11 ? 4 :
+                          field_type == 12 ? 8 :
+                                             0;
+
+    const total_data_size field_type_size * component_count;
+
+    if (total_data_size > 4)
+        unsigned 8 BE_k remote_data[total_data_size] @ startof(@tiff_header) + data_or_offset;
+
+    if (tag_number == 34665)
+        struct ifd_t sub_ifd @ startof(@tiff_header) + data_or_offset;
+}
+
+struct ifd_t
+{
+    unsigned 16 BE_k   ifd_entry_count;
+    struct ifd_entry_t entry_set[ifd_entry_count];
+    unsigned 32 BE_k   next_ifd_offset;
+}
+
+struct xmp_t
+{
+    const packet_length length - sizeof(@length, @identifier);
+
+    skip xmp_packet packet_length;
+}
+
+struct exif_t
+{
+    unsigned 8 big  sig_leftovers; // leftover \x00 or \xff from identifier
+    unsigned 16 big tiff_header;   // 0x4949 (little) or 0x4d4d (big)
+
+    const BE_k tiff_header == 0x4D4D;
+
+    unsigned 16 BE_k tiff_tag_mark; // 42
+    unsigned 32 BE_k ifd0_offset;   // usually 8 for IFD 0
+    struct ifd_t     ifd0 @ startof(@tiff_header) + ifd0_offset;
+
+    const remote_data_length length - sizeof(@length, @ifd0_offset);
+
+    skip remote_data remote_data_length;
+}
+
+struct app1_marker_t
+{
+    if (identifier[0] == 69)
+        struct exif_t exif; // ascii 'E'
+    if (identifier[0] == 104)
+        struct xmp_t xmp; // ascii 'h'
+}
+
+struct appN_marker_t
+{
+    const data_length length - sizeof(@length, @identifier);
+
+    skip unimplemented data_length;
+}
+
+struct nonapp_marker_t
+{
+    skip unimplemented data_length;
+}
+
+struct segment_t
+{
+    unsigned 8 big app_marker1;
+
+    invariant is_app_marker app_marker1 == 0xFF;
+
+    unsigned 8  big app_marker2; // 0xE?
+    unsigned 16 big length;      // data length includes itself
+
+    const data_length length - sizeof(@length);
+
+    if (app_marker2 >= 0xE0 && app_marker2 <= 0xEE)
+        unsigned 8 big identifier while { size: 8, value: 0, inclusive: true };
+
+    if (app_marker2 == 0xC0)      struct nonapp_marker_t xc0;
+    else if (app_marker2 == 0xC2) struct nonapp_marker_t xc2;
+    else if (app_marker2 == 0xC4) struct nonapp_marker_t xc4;
+    else if (app_marker2 == 0xDA) struct nonapp_marker_t xda; // start of stream
+    else if (app_marker2 == 0xDB) struct nonapp_marker_t xdb;
+    else if (app_marker2 == 0xE0) struct appN_marker_t   app0;
+    else if (app_marker2 == 0xE1) struct app1_marker_t   app1;
+    else if (app_marker2 == 0xE2) struct appN_marker_t   app2;
+    else if (app_marker2 == 0xE3) struct appN_marker_t   app3;
+    else if (app_marker2 == 0xEC) struct appN_marker_t   app12;
+    else if (app_marker2 == 0xED) struct appN_marker_t   app13;
+    else if (app_marker2 == 0xEE) struct appN_marker_t   app14;
+}
+
+struct main
+{
+    struct header_t  header;
+    struct segment_t segment while card(@segment) == 0 ||
+                                   segment[card(@segment) - 1].app_marker2 != 0xDA;
+    unsigned 8 big   image_stream while { size: 16, value: 0xFFD9 };
+    struct footer_t  footer;
+}

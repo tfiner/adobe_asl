@@ -1,0 +1,19 @@
+import testing ;
+
+project adobe/bffd
+    : requirements
+        <include>../../../adobe_source_libraries/
+        <include>../../../adobe_platform_libraries/
+        <include>../../../boost_libraries/
+    : default-build
+        <link>static
+        <threading>multi
+    : build-dir
+        ../../../built_artifacts
+    ;
+
+exe bffd
+    : main.cpp
+     [ glob ../../source/bffd/*.cpp ]
+      /adobe//asl_dev
+    ;
