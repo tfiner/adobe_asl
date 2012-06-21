@@ -1,3 +1,0 @@
-// For building i386 binaries
-
-ARCHS = i386
