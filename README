@@ -1,0 +1,21 @@
+This is a fork of the project at Sourceforge of Adobe Software Labs.
+
+Goals:
+
+1. Use the Adam and Eve libraries to create a sample UI.
+
+2. Painlessly build the libraries using a modern C++ compiler (like Clang).
+
+3. Depend upon system installations of Boost and TBB.
+
+I've converted the ASL half of the source code to build on an OS X system, using:
+    CMake 2.8
+    boost-1.49 (unpatched)
+    TBB tbb40_20110809oss
+    clang 3.2
+    gcc 4.7
+
+    Note that no attempt yet has been made to build on a linux or a windows (yet).
+
+In Progress
+I'm still working on converting the platform half to build using CMake & clang.  Clang is a lot more strict and there are some bits of the platform library that it complains about.
