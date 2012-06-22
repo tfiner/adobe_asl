@@ -12,18 +12,18 @@ message( STATUS "Boost defines: ${Boost_DEFINITIONS}" )
 message( STATUS "Boost libs:    ${Boost_LIBRARIES}" )
 
 # Used to include FindTBB.cmake
-# set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
-# find_package( TBB )
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../cmake")
+find_package( TBB )
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/macintosh )
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../adobe_source_libraries )
 include_directories( ${Boost_INCLUDE_DIRS} )
-# include_directories( ${TBB_INCLUDE_DIRS} )
+include_directories( ${TBB_INCLUDE_DIRS} )
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -m64  -Wall -Woverloaded-virtual -Wextra ${Boost_DEFINITIONS}" ) 
-# set(CMAKE_CXX_FLAGS_DEBUG "-DTBB_USE_DEBUG -g -O0")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+set(CMAKE_CXX_FLAGS "-std=c++11 -m32 -Wno-deprecated-declarations ${Boost_DEFINITIONS}" ) 
+# set(CMAKE_CXX_FLAGS "-std=c++11 -m32 -Wall -Woverloaded-virtual -Wextra ${Boost_DEFINITIONS}" ) 
+set(CMAKE_CXX_FLAGS_DEBUG "-DTBB_USE_DEBUG -g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
 
 set(WIDGET_SRCS
@@ -85,6 +85,5 @@ set(MAC_SRCS
 )
 
 add_library(apl SHARED ${WIDGET_SRCS} ${FUTURE_SRCS} ${MAC_SRCS} )
-# target_link_libraries( asl ${TBB_LIBRARY} ${Boost_LIBRARIES} )
-target_link_libraries( apl ${Boost_LIBRARIES} )
+target_link_libraries( apl ${TBB_LIBRARY} ${Boost_LIBRARIES} )
 

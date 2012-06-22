@@ -4,4 +4,5 @@ adobe_source_libraries/CDebug
 adobe_source_libraries/Debug
 adobe_source_libraries/CRelease
 platform_release/CDebug
+platform_release/Debug
 asl.sublime-workspace
