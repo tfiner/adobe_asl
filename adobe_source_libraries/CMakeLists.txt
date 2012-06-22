@@ -4,14 +4,30 @@ message( STATUS "Building ASL - ${CMAKE_BUILD_TYPE}")
 
 project (asl)
 
+# Used to include FindTBB.cmake
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+
+
+# set(Boost_DEBUG 1) 
+# set(Boost_NO_BOOST_CMAKE, 1)
+# set(Boost_NO_SYSTEM_PATHS, 1)
+# SET(BOOST_ROOT, "/opt/local" )
+# set(BOOST_INCLUDEDIR, "opt/local/include")
+# set(BOOST_LIBRARYDIR, "opt/local/lib")
+find_package( Boost 1.49.0 COMPONENTS thread signals REQUIRED )
+
+find_package( TBB )
+
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories( /usr/local/include )
+include_directories( ${TBB_INCLUDE_DIRS} )
 
 link_directories( ${Boost_LIBRARY_DEFINITIONS} )
+link_directories( ${TBB_DEBUG_LIBRARY_DIRS} )
 link_directories( /usr/lib/system )
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -m64  -Wall -Woverloaded-virtual -Wextra -isystem /opt/local/include -isystem /usr/local/include" )
-set(CMAKE_CXX_FLAGS_DEBUG "-DTBB_USE_DEBUG -g -ggdb3 -O0")
+set(CMAKE_CXX_FLAGS_DEBUG "-DTBB_USE_DEBUG -g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
 
 set(SRCS 
@@ -57,5 +73,5 @@ set(SRCS
         source/zuid_uuid.cpp
 )
 
-add_library(asl STATIC ${SRCS} )
-target_link_libraries( asl tbb )
+add_library(asl SHARED ${SRCS} )
+target_link_libraries( asl ${TBB_LIBRARY} ${Boost__LIBRARY} )
