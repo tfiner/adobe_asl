@@ -18,6 +18,8 @@
 #include <adobe/future/widgets/headers/edit_number.hpp>
 #include <adobe/future/widgets/headers/display.hpp>
 
+#include <adobe/future/widgets/headers/platform_widget_utils.hpp>
+
 #include <iomanip>
 #include <limits>
 
