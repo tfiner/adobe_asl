@@ -2,7 +2,9 @@
 	"folders":
 	[
 		{
-			"path": "/Users/tim/projects/adobe_asl"
+			"path": "/Users/tim/projects/adobe_asl",
+            "folder_exclude_patterns": ["documentation"],
+            "file_exclude_patterns": ["*.html"]
 		}
 	],
 
@@ -10,6 +12,7 @@
     {
         "sublimeclang_options":
         [
+            "-m32",
             "-I/Users/tim/projects/adobe_asl/adobe_source_libraries",
             "-I/Users/tim/projects/adobe_asl/platform_release",
             "-I/Users/tim/projects/adobe_asl/platform_release/macintosh",
@@ -17,5 +20,16 @@
             "-I/opt/local/include", 
             "-I/usr/local/include"
         ]
-    }
+    },
+
+    "build_systems":
+    [
+        {
+            "name": "cmake",
+            "working_dir": "${project_path:${folder}}_build/CDebug",
+        //    "cmd": ["make", "-j", "8"],
+            "cmd": ["make", "VERBOSE=1"],
+            "file_regex": "(?:In file included from )?(.+?):([0-9]+):([0-9]+)?:?(.*)?$"
+        }
+    ]
 }
