@@ -23,6 +23,8 @@
 
 #include <adobe/future/widgets/headers/widget_utils.hpp>
 
+#include <boost/function.hpp>
+
 /**************************************************************************************************/
 
 namespace adobe {
