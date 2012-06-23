@@ -323,7 +323,8 @@ class auto_resource
         http://www.open-std.org/jtc1/sc22/wg21/docs/lwg-active.html#463
     */ 
 // VC 2003 internal compiler error workaround. Some misues of auto_resource will go undetected under MSVC until fixed.
-#ifndef BOOST_MSVC 
+// ifndef BOOST_MSVC        
+#if 0 
   template <typename Y> struct error_on_const_auto_type;
     template <typename Y> struct error_on_const_auto_type<auto_resource<Y, typename traits_type::template rebind<Y>::other> const>
     { typedef typename auto_resource<Y, typename traits_type::template rebind<Y>::other>::const_auto_type_is_not_allowed type; };
@@ -431,12 +432,13 @@ class auto_ptr : public auto_resource<X*, Traits>
     element_type& operator [] (std::size_t index) const throw(); // addition
             
  private:
+#if 0
     template <typename Y> struct error_on_const_auto_type;
     template <typename Y> struct error_on_const_auto_type<auto_ptr<Y, typename traits_type::template rebind<Y*>::other> const>
-    { typedef typename auto_ptr<Y, typename traits_type::template rebind<Y*>::other>::const_auto_type_is_not_allowed type; };
-    
+    { typedef typename auto_ptr<Y, typename traits_type::template rebind<Y*>::other>::const_auto_type_is_not_allowed type; };    
     template <class U>
     auto_ptr(U& rhs, typename error_on_const_auto_type<U>::type = 0);
+#endif    
 };
 
 //! @}

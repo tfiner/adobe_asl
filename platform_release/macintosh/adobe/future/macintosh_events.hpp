@@ -12,7 +12,9 @@
 /**************************************************************************************************/
 
 #if __LP64__
-    #error "Carbon is not supported in 64 bit environments."
+//    #error "Carbon is not supported in 64 bit environments."
+// Looks like it really is:
+//  https://developer.apple.com/library/mac/#documentation/Carbon/Conceptual/Carbon64BitGuide/Introduction/Introduction.html
 #else
 
 /**************************************************************************************************/
