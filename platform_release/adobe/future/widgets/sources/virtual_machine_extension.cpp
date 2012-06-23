@@ -61,8 +61,10 @@ any_regular_t vm_dictionary_image_proc(const dictionary_t& named_argument_set)
 
     get_value(named_argument_set, key_name, filename);
 
-    if (!filename.empty())
-        image_slurp(boost::filesystem::path(filename, boost::filesystem::native), the_image);
+    if (!filename.empty()) {
+        auto path = boost::filesystem::path(filename);
+        image_slurp(path, the_image);
+    }
 
     return any_regular_t(the_image);
 }
@@ -80,7 +82,7 @@ any_regular_t vm_array_image_proc(const array_t& argument_set)
     argument_set[0].cast(filename);
 
     if (!filename.empty())
-        image_slurp(boost::filesystem::path(filename, boost::filesystem::native), the_image);
+        image_slurp(boost::filesystem::path(filename), the_image);
 
     return any_regular_t(the_image);
 }
