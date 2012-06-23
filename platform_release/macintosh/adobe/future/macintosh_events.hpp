@@ -37,7 +37,7 @@ inline bool operator == (const ::EventTypeSpec& x, const ::EventTypeSpec& y)
 { return x.eventClass == y.eventClass && x.eventKind == y.eventKind; }
 
 inline bool operator < (const ::EventTypeSpec& x, const ::EventTypeSpec& y)
-{ return x.eventClass < y.eventClass || x.eventClass == y.eventClass && x.eventKind < y.eventKind; }
+{ return x.eventClass < y.eventClass || (x.eventClass == y.eventClass && x.eventKind < y.eventKind); }
 
 /**************************************************************************************************/
 

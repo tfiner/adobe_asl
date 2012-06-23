@@ -16,6 +16,7 @@
 /*************************************************************************************************/
 
 #include <concepts>
+#include <algorithm>
 
 /*************************************************************************************************/
 
@@ -63,7 +64,7 @@ struct RegularConcept
         boost::function_requires<boost::EqualityComparableConcept<T> >();
         //        boost::function_requires<boost::SwappableConcept<T> >();
 
-        swap(t,t);
+        std::swap(t,t);
     }
 #if !defined(ADOBE_NO_DOCUMENTATION)
     T t;
