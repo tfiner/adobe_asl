@@ -1,7 +1,5 @@
 cmake_minimum_required (VERSION 2.6)
 
-message( STATUS "Building Adobe Platform - ${CMAKE_BUILD_TYPE}")
-
 project (apl)
 
 # set(Boost_DEBUG 1)
@@ -16,14 +14,21 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 find_package( TBB )
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/macintosh )
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/adobe )
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../adobe_source_libraries )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 include_directories( SYSTEM ${TBB_INCLUDE_DIRS} )
 
+if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
+   # Platform specific headers
+   include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/macintosh )
+
+   # Because Carbon/64 has some different Navigation API calls.
+   message( STATUS "OS X: forcing 32 bit build" )
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+endif()
+
 set(CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-declarations ${Boost_DEFINITIONS}" ) 
-# set(CMAKE_CXX_FLAGS "-std=c++11 -m32 -Wall -Woverloaded-virtual -Wextra ${Boost_DEFINITIONS}" ) 
 set(CMAKE_CXX_FLAGS_DEBUG "-DTBB_USE_DEBUG -g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
 
@@ -90,6 +95,12 @@ SET_SOURCE_FILES_PROPERTIES(
     PROPERTIES LANGUAGE C
 )
 
-add_library(apl SHARED ${WIDGET_SRCS} ${FUTURE_SRCS} ${MAC_OBJC_SRCS} )
+set ( ALL_SRC ${WIDGET_SRCS} ${FUTURE_SRCS} )
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
+   list(APPEND ALL_SRC ${MAC_OBJC_SRCS})
+endif()
+
+add_library(apl SHARED ${ALL_SRC} )
 target_link_libraries( apl ${TBB_LIBRARY} ${Boost_LIBRARIES} )
 
