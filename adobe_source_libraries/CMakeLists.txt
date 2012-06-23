@@ -16,10 +16,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 find_package( TBB )
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
-include_directories( ${Boost_INCLUDE_DIRS} )
-include_directories( ${TBB_INCLUDE_DIRS} )
+include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
+include_directories( SYSTEM ${TBB_INCLUDE_DIRS} )
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -m64  -Wall -Woverloaded-virtual -Wextra ${Boost_DEFINITIONS}" ) 
+set(CMAKE_CXX_FLAGS "-std=c++11 ${Boost_DEFINITIONS}" ) 
 set(CMAKE_CXX_FLAGS_DEBUG "-DTBB_USE_DEBUG -g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
 

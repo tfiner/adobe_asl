@@ -4,5 +4,18 @@
 		{
 			"path": "/Users/tim/projects/adobe_asl"
 		}
-	]
+	],
+
+    "settings": 
+    {
+        "sublimeclang_options":
+        [
+            "-I/Users/tim/projects/adobe_asl/adobe_source_libraries",
+            "-I/Users/tim/projects/adobe_asl/platform_release",
+            "-I/Users/tim/projects/adobe_asl/platform_release/macintosh",
+            "-I/Users/tim/projects/adobe_asl/platform_release/adobe",
+            "-I/opt/local/include", 
+            "-I/usr/local/include"
+        ]
+    }
 }
