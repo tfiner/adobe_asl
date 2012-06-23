@@ -12,7 +12,7 @@ message( STATUS "Boost defines: ${Boost_DEFINITIONS}" )
 message( STATUS "Boost libs:    ${Boost_LIBRARIES}" )
 
 # Used to include FindTBB.cmake
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../cmake")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 find_package( TBB )
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
@@ -79,11 +79,16 @@ set(FUTURE_SRCS
         adobe/future/source/resources.cpp        
 )
 
-set(MAC_SRCS
+set(MAC_OBJC_SRCS
         macintosh/adobe/future/source/macintosh_cocoa_bridge.mm
         macintosh/adobe/future/source/platform_cursor.mm
 )
 
-add_library(apl SHARED ${WIDGET_SRCS} ${FUTURE_SRCS} ${MAC_SRCS} )
+SET_SOURCE_FILES_PROPERTIES(
+    ${MAC_OBJC_SRCS}
+    PROPERTIES LANGUAGE C
+)
+
+add_library(apl SHARED ${WIDGET_SRCS} ${FUTURE_SRCS} ${MAC_OBJC_SRCS} )
 target_link_libraries( apl ${TBB_LIBRARY} ${Boost_LIBRARIES} )
 

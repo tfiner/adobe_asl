@@ -1,5 +1,22 @@
 This is a fork of the project at Sourceforge of Adobe Software Labs.
 
+Building:
+Prerequisites:
+    CMake 2.8+
+    gcc 4.6+ / clang 3.2+
+    TBB 4.0+
+    boost 1.49+
+
+These instructions are assuming that you are at a command line.
+1. Use github to pull from this repository (instructions are on github).
+2. Make a build result directory (mkdir Debug).
+3. Cd to the new build directory (cd Debug).
+4. Configure CMake (ccmake <path to source>)
+5. Optionally choose your compiler [t], CMAKE_CXX_COMPILER, CMAKE_C_COMPILER, [c]onfigure
+6. Set CMAKE_BUILD_TYPE (return, type in Debug, Release, etc., return), [c]onfigure
+7. If all goes well, then [g]enerate.
+8. make -j <number of cores>
+
 Goals:
 
 1. Use the Adam and Eve libraries to create a sample UI.
@@ -19,3 +36,6 @@ I've converted the ASL half of the source code to build on an OS X system, using
 
 In Progress
 I'm still working on converting the platform half to build using CMake & clang.  Clang is a lot more strict and there are some bits of the platform library that it complains about.
+
+Problems
+There are a few errors relating to 64 bit in the platform library.  I'm attempting to build 32 bit versions of the libraries until I figure out what to do about the 64 bit error message.

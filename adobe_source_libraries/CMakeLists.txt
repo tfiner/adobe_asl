@@ -12,7 +12,7 @@ message( STATUS "Boost defines: ${Boost_DEFINITIONS}" )
 message( STATUS "Boost libs:    ${Boost_LIBRARIES}" )
 
 # Used to include FindTBB.cmake
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../cmake")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 find_package( TBB )
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
