@@ -17,7 +17,7 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 include_directories( SYSTEM ${TBB_INCLUDE_DIRS} )
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${Boost_DEFINITIONS}" )
+set(CMAKE_CXX_FLAGS "-std=c++11 ${Boost_DEFINITIONS} -DADOBE_STD_SERIALIZATION" )
 
 # Because Carbon/64 has some different Navigation API calls.
 if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)

@@ -19,7 +19,7 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../adobe_source_libraries )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 include_directories( SYSTEM ${TBB_INCLUDE_DIRS} )
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-declarations ${Boost_DEFINITIONS}" ) 
+set(CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-declarations ${Boost_DEFINITIONS} -DADOBE_STD_SERIALIZATION" ) 
 set(CMAKE_CXX_FLAGS_DEBUG "-DTBB_USE_DEBUG -g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
 
@@ -31,10 +31,25 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
 
    # Because Carbon/64 has some different Navigation API calls.
    message( STATUS "OS X: forcing 32 bit build" )
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -isysroot /Developer/SDKs/MacOSX10.6.sdk")
    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -Wno-deprecated-declarations")
-   set(CMAKE_SHARED_LINKER_FLAGS "-framework AppKit -framework Carbon")
+   set(CMAKE_SHARED_LINKER_FLAGS "-framework AppKit -framework Carbon -framework ApplicationServices -framework AudioToolbox")
 endif()
+
+set(PORTABLE_SRCS
+        source/dictionary_set.cpp
+        source/expression_formatter.cpp
+        source/formatter_tokens.cpp
+        source/keyboard.cpp
+        source/layout_formatter.cpp
+        source/property_model_formatter.cpp
+        source/sequence_model.cpp
+
+        source/bffd/analyzer.cpp
+        source/bffd/common.cpp
+        source/bffd/interface.cpp
+        source/bffd/parser.cpp
+)
 
 
 set(WIDGET_SRCS
@@ -142,7 +157,7 @@ set_source_files_properties(
     ${MAC_OBJC_SRCS} 
     PROPERTIES LANGUAGE C)
 
-set ( ALL_SRC ${WIDGET_SRCS} ${FUTURE_SRCS} )
+set ( ALL_SRC ${PORTABLE_SRCS} ${WIDGET_SRCS} ${FUTURE_SRCS} )
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
    list(APPEND ALL_SRC ${MAC_OBJC_SRCS})
