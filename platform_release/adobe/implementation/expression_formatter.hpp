@@ -20,6 +20,7 @@
 #include <adobe/dictionary.hpp>
 #include <adobe/implementation/token.hpp>
 #include <adobe/iomanip.hpp>
+#include <adobe/manip.hpp>
 #include <adobe/static_table.hpp>
 #include <adobe/string.hpp>
 

@@ -52,6 +52,9 @@ struct serializable_t
 
 template <typename T>
 struct serializable : serializable_t {
+    serializable() {} // required by C++: 
+                      //    default initialization of an object of const type 'const serializable<T>' 
+                      //    requires a user-provided default constructor
     void operator () (std::ostream& out, const any_regular_t& x) const
     { out << format(x.cast<T>()); }
 };

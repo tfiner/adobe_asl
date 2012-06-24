@@ -15,6 +15,8 @@
 
 #include <boost/noncopyable.hpp>
 
+#include <ApplicationServices/ApplicationServices.h>
+
 /****************************************************************************************************/
 
 namespace adobe {
