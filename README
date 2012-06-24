@@ -22,17 +22,19 @@ Goals:
 1. Use the Adam and Eve libraries to create a sample UI.
 
 2. Painlessly build the libraries using a modern C++ compiler (like Clang).
+Done.  A CMake driven Clang-3.2 builds the ASL and APL as dynamic libraries.
 
 3. Depend upon system installations of Boost and TBB.
+Done.  No patching needed.  On OS X anyways, it's a simple matter to use mac ports 
+commands to install both.  CMake automatically detects and uses them.
 
-I've converted the ASL half of the source code to build on an OS X system, using:
-    CMake 2.8
-    boost-1.49 (unpatched)
-    TBB tbb40_20110809oss
-    clang 3.2
-    gcc 4.7
+CMake 2.8
+boost-1.49 (unpatched)
+TBB tbb40_20110809oss
+clang 3.2
+gcc 4.7 (almost working see problem 3 below)
 
-    Note that no attempt yet has been made to build on a linux or a windows (yet).
+Note that no attempt yet has been made to build on a linux or a windows (yet).
 
 Building Prerequisites
 MacPorts:
@@ -43,14 +45,8 @@ MacPorts:
         
     sudo port install tbb +universal +debug
 
-In Progress
-I'm still working on converting the platform half to build using CMake & clang.  Clang is a lot more strict and there are some bits of the platform library that it complains about.  I've gotten rid of a bunch of the warnings (there were some real bugs in there).
-
-Almost there!  Everything compiles except for platform_widget_utils.cpp.
-
-
 Problems
-platform_widget_utils.cpp
+1. [Fixed] Deleted FontManager API calls in platform_widget_utils.cpp
 
 deleted functions:
 FMGetFontFromATSFontRef
@@ -58,6 +54,15 @@ FMGetFontFamilyInstanceFromFont
 
 I did some research and it looks like those two functions have been deprecated for a long time, and they were finally deleted in 10.7.
 
+[Fix] I added -isysroot /Developer/SDKs/MacOSX10.6.sdk and it picks up the deprecated functions that no longer exist in 10.7.  I tried using CMake's CMAKE_OSX_SYSROOT, but that didn't show any include path changes when building verbosely and subsequently did not work.
+
+2. [Fixed] 64 bit build
 There are a few errors relating to 64 bit in the platform library.  I found out that it is related to Carbon and the Navigation system.  The function calls in the platform code aren't available in 64 bit.  There are newer API calls that are in the 64 bit version, but I'm not familiar enough to make those changes.
 
-I'm building 32 bit versions of the libraries for now.
+[Fix] I'm building 32 bit versions of the libraries via -m32.
+
+3. GCC-4.7 doesn't build
+/opt/local/include/gcc47/c++/cmath:1108:11: error: '::llrint' has not been declared
+...
+
+I'm ignoring this as I got everything to build with clang.
