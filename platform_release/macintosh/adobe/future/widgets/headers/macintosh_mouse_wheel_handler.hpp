@@ -51,7 +51,7 @@ struct mouse_wheel_handler_t
         get_event_parameter<kEventParamMouseWheelDelta>(event, delta);
         get_event_parameter<kEventParamKeyModifiers>(event, modifiers);
 
-        callback_m(delta, modifiers & optionKey != 0);
+        callback_m(delta, (modifiers & optionKey) != 0);
 
         return noErr;
     }

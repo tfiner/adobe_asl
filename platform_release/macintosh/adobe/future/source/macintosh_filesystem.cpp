@@ -45,7 +45,7 @@ boost::filesystem::path fsref_to_path(const ::FSRef& location)
 
     ADOBE_REQUIRE_STATUS(error);
 
-    return boost::filesystem::path(&path_buffer[0], boost::filesystem::native);
+    return boost::filesystem::path(&path_buffer[0]);
 }
 
 /**************************************************************************************************/

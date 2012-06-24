@@ -12,6 +12,9 @@
 #include <adobe/future/macintosh_graphic_utils.hpp>
 #include <adobe/future/widgets/headers/widget_utils.hpp>
 
+#include <limits>
+#include <algorithm>
+
 /****************************************************************************************************/
 
 namespace {
@@ -125,7 +128,9 @@ ControlUserPaneHitTestUPP hit_test_handler_upp()
 
 void initialize(adobe::image_t& value, ::HIViewRef /*parent*/)
 {
-    ::Rect          bounds = { 0, 0, value.image_m.width(), value.image_m.height() };
+    auto w = std::min(static_cast<int>(std::numeric_limits<short>::max()), value.image_m.width());
+    auto h = std::min(static_cast<int>(std::numeric_limits<short>::max()), value.image_m.height());
+    ::Rect          bounds = { 0, 0, static_cast<short>(w), static_cast<short>(h) };
     ::ControlRef    tmp_control;
 
     ::ADOBE_REQUIRE_STATUS(::CreateUserPaneControl(0, &bounds, 0, &tmp_control));

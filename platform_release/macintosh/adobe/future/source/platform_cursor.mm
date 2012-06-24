@@ -26,8 +26,7 @@ NSImage* to_NSImage(const char* cursor_path)
 {
     boost::gil::rgba8_image_t cursor_image;
 
-    adobe::image_slurp(boost::filesystem::path(cursor_path, boost::filesystem::native),
-                       cursor_image);
+    adobe::image_slurp(boost::filesystem::path(cursor_path),cursor_image);
 
     adobe::auto_resource<adobe::cg_image_t> cursor_cg_image(adobe::make_cg_image(cursor_image));
 

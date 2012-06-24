@@ -34,8 +34,30 @@ I've converted the ASL half of the source code to build on an OS X system, using
 
     Note that no attempt yet has been made to build on a linux or a windows (yet).
 
+Building Prerequisites
+MacPorts:
+    sudo port install boost +universal +debug
+        (wait a long time, macports has multicore support disabled for bjam)
+        You must use the +universal variant to build the 32 bit version.
+        The +debug variant is nice to have, and not strictly necessary.
+        
+    sudo port install tbb +universal +debug
+
 In Progress
-I'm still working on converting the platform half to build using CMake & clang.  Clang is a lot more strict and there are some bits of the platform library that it complains about.
+I'm still working on converting the platform half to build using CMake & clang.  Clang is a lot more strict and there are some bits of the platform library that it complains about.  I've gotten rid of a bunch of the warnings (there were some real bugs in there).
+
+Almost there!  Everything compiles except for platform_widget_utils.cpp.
+
 
 Problems
-There are a few errors relating to 64 bit in the platform library.  I'm attempting to build 32 bit versions of the libraries until I figure out what to do about the 64 bit error message.
+platform_widget_utils.cpp
+
+deleted functions:
+FMGetFontFromATSFontRef
+FMGetFontFamilyInstanceFromFont
+
+I did some research and it looks like those two functions have been deprecated for a long time, and they were finally deleted in 10.7.
+
+There are a few errors relating to 64 bit in the platform library.  I found out that it is related to Carbon and the Navigation system.  The function calls in the platform code aren't available in 64 bit.  There are newer API calls that are in the 64 bit version, but I'm not familiar enough to make those changes.
+
+I'm building 32 bit versions of the libraries for now.

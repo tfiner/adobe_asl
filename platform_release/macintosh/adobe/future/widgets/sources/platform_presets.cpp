@@ -45,8 +45,7 @@ try
     CGContextRef context(0);
     bfs::path    preset_name(::IsControlEnabled(control) == false ? "preset_button_u_d.tga" :
                                                presets.selected_m ? "preset_button_d_n.tga" :
-                                                                    "preset_button_u_n.tga",
-                             boost::filesystem::native);
+                                                                    "preset_button_u_n.tga");
 
     boost::gil::rgba8_image_t gil_image;
 

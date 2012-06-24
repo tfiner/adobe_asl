@@ -163,7 +163,9 @@ void window_t::place(const place_data_t& place_data)
         dimensions_m.x_m = width(bounds);
         dimensions_m.y_m = height(bounds);
 
-        ::HISize min_size = { dimensions_m.x_m, dimensions_m.y_m };
+        ::HISize min_size = { 
+            static_cast<float>(dimensions_m.x_m), 
+            static_cast<float>(dimensions_m.y_m) };
 
         ADOBE_REQUIRE_STATUS(::SetWindowResizeLimits(window_m, &min_size, NULL));
 
@@ -219,7 +221,9 @@ void window_t::set_size(const point_2d_t& size)
 
     dimensions_m = size;
 
-    ::HISize min_size = { size.x_m, size.y_m };
+    ::HISize min_size = { 
+        static_cast<float>(size.x_m), 
+        static_cast<float>(size.y_m) };
 
     ADOBE_REQUIRE_STATUS(::SetWindowResizeLimits(window_m, &min_size, NULL));
 

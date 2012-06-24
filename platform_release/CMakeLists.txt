@@ -4,7 +4,7 @@ project (apl)
 
 # set(Boost_DEBUG 1)
 # set(Boost_DETAILED_FAILURE_MSG 1) 
-find_package( Boost REQUIRED COMPONENTS filesystem signals ) # thread
+find_package( Boost REQUIRED COMPONENTS filesystem signals system) # thread
 message( STATUS "Boost include: ${Boost_INCLUDE_DIR}" )
 message( STATUS "Boost defines: ${Boost_DEFINITIONS}" )
 message( STATUS "Boost libs:    ${Boost_LIBRARIES}" )
@@ -19,6 +19,12 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../adobe_source_libraries )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 include_directories( SYSTEM ${TBB_INCLUDE_DIRS} )
 
+set(CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-declarations ${Boost_DEFINITIONS}" ) 
+set(CMAKE_CXX_FLAGS_DEBUG "-DTBB_USE_DEBUG -g -O0")
+set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
+
+set(CMAKE_C_FLAGS "-Wno-deprecated-declarations" ) 
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
    # Platform specific headers
    include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/macintosh )
@@ -26,11 +32,10 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
    # Because Carbon/64 has some different Navigation API calls.
    message( STATUS "OS X: forcing 32 bit build" )
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -Wno-deprecated-declarations")
+   set(CMAKE_SHARED_LINKER_FLAGS "-framework AppKit -framework Carbon")
 endif()
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-declarations ${Boost_DEFINITIONS}" ) 
-set(CMAKE_CXX_FLAGS_DEBUG "-DTBB_USE_DEBUG -g -O0")
-set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
 
 set(WIDGET_SRCS
         adobe/future/widgets/sources/alert.cpp
@@ -90,17 +95,60 @@ set(MAC_OBJC_SRCS
         macintosh/adobe/future/source/platform_cursor.mm
 )
 
-SET_SOURCE_FILES_PROPERTIES(
-    ${MAC_OBJC_SRCS}
-    PROPERTIES LANGUAGE C
+set(MAC_CPP_SRCS
+        macintosh/adobe/future/source/macintosh_controls.cpp
+        macintosh/adobe/future/source/macintosh_error.cpp
+        macintosh/adobe/future/source/macintosh_events.cpp
+        macintosh/adobe/future/source/macintosh_filesystem.cpp
+        macintosh/adobe/future/source/macintosh_graphic_utils.cpp
+        macintosh/adobe/future/source/platform_drag_and_drop_data.cpp
+        macintosh/adobe/future/source/platform_file_monitor_impl.cpp
+        macintosh/adobe/future/source/platform_locale_data.cpp
+        macintosh/adobe/future/source/platform_number_formatter_data.cpp
+        macintosh/adobe/future/source/platform_periodical_data.cpp
+        macintosh/adobe/future/widgets/sources/platform_button.cpp
+        macintosh/adobe/future/widgets/sources/platform_checkbox.cpp
+        macintosh/adobe/future/widgets/sources/platform_display.cpp
+        macintosh/adobe/future/widgets/sources/platform_display_number.cpp
+        macintosh/adobe/future/widgets/sources/platform_edit_number.cpp
+        macintosh/adobe/future/widgets/sources/platform_edit_text.cpp
+        macintosh/adobe/future/widgets/sources/platform_group.cpp
+        macintosh/adobe/future/widgets/sources/platform_image.cpp
+        macintosh/adobe/future/widgets/sources/platform_label.cpp
+        macintosh/adobe/future/widgets/sources/platform_link.cpp
+        macintosh/adobe/future/widgets/sources/platform_metrics.cpp
+        macintosh/adobe/future/widgets/sources/platform_optional_panel.cpp
+        macintosh/adobe/future/widgets/sources/platform_panel.cpp
+        macintosh/adobe/future/widgets/sources/platform_popup.cpp
+        macintosh/adobe/future/widgets/sources/platform_presets.cpp
+        macintosh/adobe/future/widgets/sources/platform_preview.cpp
+        macintosh/adobe/future/widgets/sources/platform_progress_bar.cpp
+        macintosh/adobe/future/widgets/sources/platform_radio_button.cpp
+        macintosh/adobe/future/widgets/sources/platform_reveal.cpp
+        macintosh/adobe/future/widgets/sources/platform_separator.cpp
+        macintosh/adobe/future/widgets/sources/platform_slider.cpp
+        macintosh/adobe/future/widgets/sources/platform_tab_group.cpp
+        macintosh/adobe/future/widgets/sources/platform_toggle.cpp
+        macintosh/adobe/future/widgets/sources/platform_widget_utils.cpp
+        macintosh/adobe/future/widgets/sources/platform_window.cpp        
 )
+
+set_source_files_properties(
+    ${MAC_OBJC_SRCS} 
+    PROPERTIES COMPILE_FLAGS
+    "-x objective-c++ -Wno-deprecated-declarations")
+
+set_source_files_properties(
+    ${MAC_OBJC_SRCS} 
+    PROPERTIES LANGUAGE C)
 
 set ( ALL_SRC ${WIDGET_SRCS} ${FUTURE_SRCS} )
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
    list(APPEND ALL_SRC ${MAC_OBJC_SRCS})
+   list(APPEND ALL_SRC ${MAC_CPP_SRCS})
 endif()
 
 add_library(apl SHARED ${ALL_SRC} )
-target_link_libraries( apl ${TBB_LIBRARY} ${Boost_LIBRARIES} )
+target_link_libraries( apl asl ${TBB_LIBRARY} ${Boost_LIBRARIES} )
 

@@ -81,7 +81,8 @@ ADOBE_WIDGET_TAG_BOILERPLATE(tab_group_t, "<xstr id='metric:tab_group'/>");
 
     std::size_t value(implementation::get_value(widget_m) - 1);
 
-    setter_m(widget_m.items_m[value >= 0 ? value : 0].value_m);
+    // size_t is always > 0, pointless conditional caught by clang.
+    setter_m(widget_m.items_m[value].value_m);
 
     widget_m.debounce_m = false;
 

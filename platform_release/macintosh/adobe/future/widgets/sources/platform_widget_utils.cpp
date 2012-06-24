@@ -114,7 +114,6 @@ std::string get_name< ::WindowRef >(const ::WindowRef& window)
 /****************************************************************************************************/
 
 /// REVISIT (fbrereto) : This is tucked into a cpp file because it uses a deprecated MacOS X API
-
 ::FMFontFamily get_classic_font_id(const char* font_name, std::size_t name_length)
 {
     ::ATSUFontID    atsui_font_id(get_atsui_font_id(font_name, name_length));
@@ -386,7 +385,7 @@ void set_popup_with_text(ControlRef control, const std::string& text, unsigned l
 /// sets the keyboard focus for a control
 
 template <>
-static void set_focus< ::ControlRef >(::ControlRef& control, bool make_focused)
+void set_focus< ::ControlRef >(::ControlRef& control, bool make_focused)
 {
     assert(control);
 
@@ -639,7 +638,7 @@ boost::filesystem::path fsref_to_path( const ::FSRef& location )
     
     ADOBE_REQUIRE_STATUS(error);
     
-    return boost::filesystem::path( &path_buffer[0], boost::filesystem::native );
+    return boost::filesystem::path( &path_buffer[0] );
 }
 
 /****************************************************************************************************/
@@ -821,7 +820,11 @@ void context_slider(boost::uint32_t left,
     ::WindowRef                           window(0);
     ::ControlRef                          root_control(0);
     ::ControlRef                          slider(0);
-    ::Rect                                bounds = { top, left, top + height, left + width };
+    ::Rect                                bounds = { 
+        static_cast<short>(top), 
+        static_cast<short>(left), 
+        static_cast<short>(top + height), 
+        static_cast<short>(left + width) };
     context_slider_callback_t             callback(proc);
 
     ADOBE_REQUIRE_STATUS(::CreateNewWindow(kHelpWindowClass, kWindowStandardHandlerAttribute | kWindowCompositingAttribute, &bounds, &window));
