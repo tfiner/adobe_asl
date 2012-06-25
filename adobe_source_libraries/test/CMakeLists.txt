@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 2.6)
 
+# To see what failed in a test, set the environment variable
+# CTEST_OUTPUT_ON_FAILURE
 project (asl-test)
-
-ENABLE_TESTING()
 
 find_package( Boost REQUIRED COMPONENTS 
     unit_test_framework filesystem system program_options 
@@ -27,8 +27,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
 
 
-# These are all stadalone, speedy tests with a main.cpp.
-# ------------------------------------------------------
+# These are all standalone, speedy tests with a main.cpp.
+# -------------------------------------------------------
 set(TESTS 
     any_iterator closed_hash cmath forest_smoke 
     move poly reduction serialization sha stable_partition_selection 
@@ -88,15 +88,15 @@ ADD_TEST(
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/property_model_eval *pme
 )
 
-# Sudoku!  I'm really impressed by this one.
+# Sudoku!  I'm really impressed by this one.  It's not an automated test though.
 add_executable (sudoku sudoku/main.cpp) 
 target_link_libraries( sudoku asl ${Boost_LIBRARIES} )
 file(COPY sudoku/sudokus.txt DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/test_files/sudoku" )
-ADD_TEST(
-    NAME sudoku 
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_files/sudoku
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/sudoku
-)
+# ADD_TEST(
+#    NAME sudoku 
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_files/sudoku
+#    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/sudoku
+#)
 
 # Tests that require platform.
 # ----------------------------

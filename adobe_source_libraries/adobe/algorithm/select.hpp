@@ -10,6 +10,8 @@
 
 #include <adobe/algorithm/minmax.hpp>
 
+#include <cassert>
+
 namespace adobe {
 
 /**************************************************************************************************/

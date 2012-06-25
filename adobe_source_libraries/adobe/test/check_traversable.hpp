@@ -81,9 +81,8 @@ void check_traversable(const T& c)
 		
 		y = x; // Make sure mutable iterator can be converted to const.
 		
-		y == x; // Make sure const/mutable iterators can be compared.
-		x == y;
-
+        // Make sure const/mutable iterators can be compared.
+		BOOST_CHECK( y == x && x == y );
 	}
     
 

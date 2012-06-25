@@ -5,6 +5,7 @@
 */
 
 /*************************************************************************************************/
+#define BOOST_TEST_MAIN
 
 #include <boost/test/unit_test.hpp>
 
@@ -37,6 +38,12 @@ void test_regular(const T& x)
     BOOST_CHECK(x == w && x != y && y == T());
 }
 
+const void* remote_address(const string_t& x)
+{
+    assert(!x.empty());
+    return x.begin();
+}
+
 /*
     Precondition: x != T(), remote_address(T) is defined.
 */
@@ -63,15 +70,12 @@ void test_movable(const T& x)
     BOOST_CHECK(remote_address(y) == addr);
 }
 
-const void* remote_address(const string_t& x)
-{
-    assert(!x.empty());
-    return x.begin();
-}
+
 
 } // namespace adobe
 
-void string_test()
+
+BOOST_AUTO_TEST_CASE(string_test)
 {
     using namespace adobe;
     
@@ -264,17 +268,5 @@ void string_test()
         BOOST_CHECK(y >= x);
     }
     #endif
-}
-
-
-using namespace boost::unit_test;
-
-test_suite*
-init_unit_test_suite( int , char* [] ) 
-{
-    framework::master_test_suite().
-        add( BOOST_TEST_CASE( &string_test ) );
-
-    return 0;
 }
 

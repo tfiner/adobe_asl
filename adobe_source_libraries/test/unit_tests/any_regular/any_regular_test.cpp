@@ -5,6 +5,7 @@
 */
 
 /*************************************************************************************************/
+#define BOOST_TEST_MAIN
 
 #include <adobe/config.hpp>
 
@@ -17,7 +18,7 @@
 
 /*************************************************************************************************/
 
-void any_regular_test() {
+BOOST_AUTO_TEST_CASE(any_regular_test) {
     
     using adobe::any_regular_t;
     using adobe::runtime_cast;
@@ -56,16 +57,3 @@ void any_regular_test() {
     }
 #endif
 }
-
-
-using namespace boost::unit_test;
-
-test_suite*
-init_unit_test_suite( int , char* [] ) 
-{
-    framework::master_test_suite().
-        add( BOOST_TEST_CASE( &any_regular_test ) );
-
-    return 0;
-}
-

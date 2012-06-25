@@ -13,4 +13,5 @@ set(ASL_PLAT_REL ${CMAKE_CURRENT_SOURCE_DIR}/platform_release)
 # Builds each library separately.
 add_subdirectory(${ASL_SRC_LIBS})
 add_subdirectory(${ASL_SRC_LIBS}/test)
+add_subdirectory(${ASL_SRC_LIBS}/test/unit_tests)
 add_subdirectory(${ASL_PLAT_REL})
