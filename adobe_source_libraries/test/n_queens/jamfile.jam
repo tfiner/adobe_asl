@@ -1,8 +1,0 @@
-import testing ;
-
-project adobe/n_queens
-	;
-
-exe n_queens
-	:	main.cpp
-	;
