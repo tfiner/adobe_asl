@@ -1032,7 +1032,7 @@ void setup_links(sudoku_t& puzzle, adobe::dancing_links_t& links)
                 const int           value(sq.value_m);
                 const int           box_index(box_index_row + (c / 3));
 
-                if (value == dpp || value == 0 && sq.possibilities_m[dpp])
+                if (value == dpp || (value == 0 && sq.possibilities_m[dpp]))
                 {
                     const int           col(d_jump_col + c);
                     const int           box(d_jump_box + box_index);
@@ -1472,11 +1472,13 @@ void mass_puzzle_generation()
 
         std::size_t i_t(i + 1);
 
-        if (i_t % dot_marker == 0)
-            if ((i_t / dot_marker) % 10 == 0)
+        if (i_t % dot_marker == 0) {
+            if ((i_t / dot_marker) % 10 == 0) {
                 std::cerr << (i_t / dot_marker) << '%';
-            else
+            } else {
                 std::cerr << '.';
+            }
+        }
     }
 
     double avg(timer.accrued_average());

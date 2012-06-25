@@ -6,6 +6,8 @@
 
 /*************************************************************************************************/
 
+#define BOOST_TEST_MAIN
+
 #include <boost/test/unit_test.hpp>
 
 #include <iterator>
@@ -20,7 +22,7 @@
 
 /*************************************************************************************************/
 
-void move_test()
+BOOST_AUTO_TEST_CASE(move_test)
 {
     typedef adobe::vector<int>          vector_t;
     typedef adobe::vector<vector_t>     vector_vector_t;
@@ -99,17 +101,5 @@ void move_test()
         adobe::uninitialized_move(&y[0], &y[3], &x[0]);
         BOOST_CHECK_EQUAL(addr, x[0].begin());
     }
-}
-
-
-using namespace boost::unit_test;
-
-test_suite*
-init_unit_test_suite( int , char* [] )
-{
-    framework::master_test_suite().
-        add( BOOST_TEST_CASE( &move_test ) );
-
-    return 0;
 }
 

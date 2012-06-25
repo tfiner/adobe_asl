@@ -5,6 +5,7 @@
 */
 
 /*************************************************************************************************/
+#define BOOST_TEST_MAIN
 
 #include <boost/test/unit_test.hpp>
 
@@ -28,7 +29,7 @@ class parameterized { };
 ADOBE_NAME_TYPE_0("named", named);
 ADOBE_NAME_TYPE_2("parameterized", parameterized<T0, T1>);
 
-void typeinfo_test()
+BOOST_AUTO_TEST_CASE( typeinfo_test )
 {
     using namespace adobe;
 
@@ -84,15 +85,4 @@ void typeinfo_test()
     }
 }
 
-
-using namespace boost::unit_test;
-
-test_suite*
-init_unit_test_suite( int , char* [] ) 
-{
-    framework::master_test_suite().
-        add( BOOST_TEST_CASE( &typeinfo_test ) );
-
-    return 0;
-}
 

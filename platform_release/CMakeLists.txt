@@ -15,7 +15,7 @@ find_package( TBB )
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/adobe )
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../adobe_source_libraries )
+include_directories( ${ASL_SRC_LIBS} )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 include_directories( SYSTEM ${TBB_INCLUDE_DIRS} )
 

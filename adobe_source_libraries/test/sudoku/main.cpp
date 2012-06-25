@@ -85,7 +85,6 @@ private:
 
 void application_t::import_preferences()
 {
-    char                buffer[1024];
     bfs::ifstream       input(prefs_path_m, std::ios_base::in | std::ios_base::binary);
 
     if (input.fail())
@@ -99,38 +98,31 @@ void application_t::import_preferences()
 
     input.unsetf(std::ios_base::skipws);
 
-    while (!input.eof())
+    int lineCount = 0;
+    std::string line;
+    while ( std::getline(input, line) )
     {
-        sudoku::sudoku_t    cur;
-        int                 count(0);
+        lineCount++;
 
-        input.getline(&buffer[0], 1024);
-
-        std::size_t readsize(static_cast<std::size_t>(input.gcount()));
-
-        if (readsize < 81) continue;
-
-        while (true)
-        {
-            char c(buffer[count]);
-
-            if (c == '\t') break;
-
-            if (c == '.' || c >= '1' && c <= '9')
-            {
-                if (c != '.')
-                    cur.square(count / 9, count % 9).value_m = c - '0';
-
-                ++count;
-            }
+        if (line.size() < 81) {
+            std::cerr << "Skipping line " << lineCount << "\n";
+            continue;
         }
 
-        if (readsize <= 81) break;
+        sudoku::sudoku_t    cur;
+        int count = 0;
+        for ( auto c : line ) {
+            if (c != '.' && (c < '1' || c > '9'))
+                break;
 
-        ++count; // to get past the tab between the name and the 
+            if (c >= '1' && c <= '9')
+                cur.square(count / 9, count % 9).value_m = c - '0';            
 
-        cur.name_m = std::string(&buffer[count], &buffer[readsize]);
+            ++count;
+        }
 
+        auto notws = line.find_first_not_of(" \t", count);
+        cur.name_m = std::string(line.begin() + notws, line.end());
         sudoku_set_m.push_back(cur);
     }
 }
@@ -402,12 +394,14 @@ int main(int argc, char** argv)
 
     std::string db_name("sudokus.txt");
 
-    if (argc > 1) db_name.assign(argv[1]);
+    if (argc > 1) 
+        db_name.assign(argv[1]);
 
-    bfs::path filepath(db_name.c_str(), argc > 1 ? bfs::native : bfs::portable_name);
+    bfs::path filepath(db_name.c_str());
 
+    std::cout << "opening " << filepath.c_str() << std::endl;
     {
-    application_t(filepath).run();
+        application_t(filepath).run();
     }
 
     return 0;

@@ -32,8 +32,8 @@
         {
             "name": "cmake",
             "working_dir": "${project_path:${folder}}_build/CDebug",
-            // "cmd": ["make", "-j", "8"],
-            "cmd": ["make", "VERBOSE=1", "-j", "8"],
+            "cmd": ["make", "-j", "8"],
+            // "cmd": ["make", "VERBOSE=1", "-j", "8"],
             "file_regex": "(?:In file included from )?(.+?):([0-9]+):([0-9]+)?:?(.*)?$"
         }
     ]

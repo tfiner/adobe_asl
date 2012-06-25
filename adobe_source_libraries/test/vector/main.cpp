@@ -40,6 +40,13 @@ void test_regular(const T& x)
     BOOST_CHECK(x == w && x != y && y == T());
 }
 
+template <typename T>
+const void* remote_address(const vector<T>& x)
+{
+    assert(!x.empty());
+    return &*x.begin();
+}
+
 /*
     Precondition: x != T(), remote_address(T) is defined.
 */
@@ -66,12 +73,7 @@ void test_movable(const T& x)
     BOOST_CHECK(remote_address(y) == addr);
 }
 
-template <typename T>
-const void* remote_address(const vector<T>& x)
-{
-    assert(!x.empty());
-    return x.begin();
-}
+
 
 } // namespace adobe
 
