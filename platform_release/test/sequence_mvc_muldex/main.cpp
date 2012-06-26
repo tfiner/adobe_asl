@@ -322,6 +322,11 @@ BOOST_AUTO_TEST_CASE(muldex_property_model)
 
 /******************************************************************************/
 
+/*
+    This test fails with result:
+    Assertion failed: (updated_m && "Must call sheet_t::update() prior to monitor_value."), function monitor_value, file /Users/tim/projects/adobe_asl/adobe_source_libraries/source/adam.cpp, line 1020.
+    unknown location:0: fatal error in "muldex_basic_sheet": signal: SIGABRT (application abort requested)
+*/
 BOOST_AUTO_TEST_CASE(muldex_basic_sheet)
 {
     std::cout << "<muldex_basic_sheet>" << std::endl;
@@ -341,6 +346,14 @@ BOOST_AUTO_TEST_CASE(muldex_basic_sheet)
     */
     basic_sheet.add_interface(adobe::static_name_t("line_in"), dictionary_initializer);
     basic_sheet.add_interface(adobe::static_name_t("line_out"), dictionary_initializer);
+
+    // dunno what to do about this:
+    // basic_sheet.update();
+    /* Fails with:
+        my_sequence_controller::push_back
+        Assertion failed: (!x && "FATAL (sparent) : Function Not Reentrant."), function check_reentrancy, file /Users/tim/projects/adobe_asl/adobe_source_libraries/source/adam.cpp, line 50.
+        unknown location:0: fatal error in "muldex_basic_sheet": signal: SIGABRT (application abort requested)    
+    */
 
     my_sequence_view<foo_t>       my_sequence_view;
     my_sequence_controller<foo_t> my_sequence_controller;

@@ -101,7 +101,7 @@ inline const any_regular_t& find_arg(const array_t& argument_set, std::size_t in
 find_arg(argument_set, (param_index - 1)).cast<typename undecorate<typename traits_type::arg##param_index##_type>::type>()
 
 #define ADOBE_FUNCTION_NAMED_ARG(param_index) \
-find_arg(named_argument_set, name##param_index##_m).cast<typename undecorate<typename traits_type::arg##param_index##_type>::type>()
+find_arg(named_argument_set, name##param_index##_m).template cast<typename undecorate<typename traits_type::arg##param_index##_type>::type>()
 
 /******************************************************************************/
 

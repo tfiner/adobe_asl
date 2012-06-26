@@ -182,6 +182,9 @@ void attach_controller_functions_direct(const FactoryToken&	token,
 										const MonitorFunction& monitor_function,
 										const EnableFunction&  enable_function)
 {
+  // tfiner : Couldn't find basic_sheet_t anywhere, docs indicate it is an 
+  // older possibly deprecated class.
+#if 0 
 	basic_sheet_t& layout_sheet(*token.mEveViewHolder.mLayoutSheet);
 	// is the cell in the layout sheet or the Adam sheet?
 	if (layout_sheet.count_interface(cell) != 0)
@@ -194,7 +197,8 @@ void attach_controller_functions_direct(const FactoryToken&	token,
 												enable_function);	
 	}
 	else
-	{
+#endif  
+	{   
 		attach_controller_functions_to_model<T>(token.mEveViewHolder.GetAssemblage(),
 												*token.mSheet,				
 												cell,

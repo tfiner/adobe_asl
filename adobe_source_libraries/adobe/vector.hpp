@@ -387,7 +387,7 @@ typename vector<T, A>::iterator vector<T, A>::insert_move(iterator p, I f, I l)
         
         if (n < after) {
             append_move(last - n, last);
-            move_backward(p, last - n, last);
+            adobe::move_backward(p, last - n, last);
             adobe::move(f, l, p);
         } else {
             I m = f;

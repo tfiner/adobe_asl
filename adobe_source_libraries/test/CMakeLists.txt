@@ -104,7 +104,7 @@ add_executable (expression_filter expression_filter/main.cpp)
 target_link_libraries( expression_filter asl apl ${Boost_LIBRARIES} )
 ADD_TEST(expression_filter ${CMAKE_CURRENT_BINARY_DIR}/expression_filter)
 
-
+# These need another target like "slow-tests"
 #set(SLOW_TESTS dictionary_benchmark n_queens)
 #foreach(TEST ${SLOW_TESTS})
 #    add_executable( ${TEST} ${TEST}/main.cpp) 

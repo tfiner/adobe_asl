@@ -22,7 +22,7 @@
 /******************************************************************************/
 
 namespace adobe {
-f
+
 /******************************************************************************/
 /*!
     OVERVIEW:
@@ -245,7 +245,7 @@ struct sequence_view_multiplexer
 
     void refresh(key_type key, cow_value_type value)
     {
-        if (proc_m == false)
+        if (!proc_m)
             return;
 
         dictionary_t command;
@@ -259,7 +259,7 @@ struct sequence_view_multiplexer
 
     void extend(key_type before, key_type key, cow_value_type value)
     {
-        if (proc_m == false)
+        if (!proc_m)
             return;
 
         dictionary_t command;
@@ -274,7 +274,7 @@ struct sequence_view_multiplexer
 
     void extend_set(key_type before, const vector<key_type>& key_set)
     {
-        if (proc_m == false)
+        if (!proc_m)
             return;
 
         dictionary_t command;
@@ -288,7 +288,7 @@ struct sequence_view_multiplexer
 
     void erase(const vector<key_type>& key_set)
     {
-        if (proc_m == false)
+        if (!proc_m)
             return;
 
         dictionary_t command;
@@ -301,7 +301,7 @@ struct sequence_view_multiplexer
 
     void clear()
     {
-        if (proc_m == false)
+        if (!proc_m)
             return;
 
         dictionary_t command;
@@ -546,7 +546,7 @@ struct sequence_model_multiplexer
     
     void push_back(const value_type& value)
     {
-        if (proc_m == false)
+        if (!proc_m)
             return;
 
         dictionary_t command;
@@ -559,7 +559,7 @@ struct sequence_model_multiplexer
 
     void set(key_type key, const value_type& value)
     {
-        if (proc_m == false)
+        if (!proc_m)
             return;
 
         dictionary_t command;
@@ -573,7 +573,7 @@ struct sequence_model_multiplexer
 
     void insert(key_type before, const value_type& value)
     {
-        if (proc_m == false)
+        if (!proc_m)
             return;
 
         dictionary_t command;
@@ -587,7 +587,7 @@ struct sequence_model_multiplexer
 
     void insert_set(key_type before, const vector<value_type>& value_set)
     {
-        if (proc_m == false)
+        if (!proc_m)
             return;
 
         dictionary_t command;
@@ -601,7 +601,7 @@ struct sequence_model_multiplexer
 
     void erase(const vector<key_type>& key_set)
     {
-        if (proc_m == false)
+        if (!proc_m)
             return;
 
         dictionary_t command;
@@ -614,7 +614,7 @@ struct sequence_model_multiplexer
 
     void clear()
     {
-        if (proc_m == false)
+        if (!proc_m)
             return;
 
         dictionary_t command;

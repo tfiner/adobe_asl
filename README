@@ -17,6 +17,9 @@ These instructions are assuming that you are at a command line.
 7. If all goes well, then [g]enerate.
 8. make -j <number of cores>
 
+Unit Tests:
+make test
+
 Goals:
 
 1. Use the Adam and Eve libraries to create a sample UI.

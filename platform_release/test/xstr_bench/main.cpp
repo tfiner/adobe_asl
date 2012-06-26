@@ -104,7 +104,7 @@ void generate_file(int argc, char** argv)
     if (argc > 1)
         test_string_count = std::atoi(argv[1]);
 
-    boost::filesystem::path boost_path(glossary_name_g, boost::filesystem::native);
+    boost::filesystem::path boost_path(glossary_name_g);
 
     std::cout << "Generating xstring file with " << test_string_count << " strings..." << std::endl;
 
@@ -152,7 +152,7 @@ int main(int argc, char** argv)
 
     try
     {
-        boost::filesystem::path boost_path(glossary_name_g, boost::filesystem::native);
+        boost::filesystem::path boost_path(glossary_name_g);
 
         if (!boost::filesystem::exists(boost_path))
             generate_file(argc, argv);
