@@ -19,21 +19,10 @@ include_directories( ${ASL_SRC_LIBS} )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 include_directories( SYSTEM ${TBB_INCLUDE_DIRS} )
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-declarations ${Boost_DEFINITIONS} -DADOBE_STD_SERIALIZATION" ) 
-set(CMAKE_CXX_FLAGS_DEBUG "-DTBB_USE_DEBUG -g -O0")
-set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
-
-set(CMAKE_C_FLAGS "-Wno-deprecated-declarations" ) 
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
    # Platform specific headers
    include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/macintosh )
-
-   # Because Carbon/64 has some different Navigation API calls.
-   message( STATUS "OS X: forcing 32 bit build" )
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -isysroot /Developer/SDKs/MacOSX10.6.sdk")
-   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -Wno-deprecated-declarations")
-   set(CMAKE_SHARED_LINKER_FLAGS "-framework AppKit -framework Carbon -framework ApplicationServices -framework AudioToolbox")
 endif()
 
 set(PORTABLE_SRCS

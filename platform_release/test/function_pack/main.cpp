@@ -46,7 +46,7 @@ inline void test_pack(adobe::function_pack_t& pack, adobe::name_t function, cons
 
         vm.evaluate(expression);
 
-        result << vm.back().value_m;
+        result << vm.back();
 
         vm.pop_back();
     }

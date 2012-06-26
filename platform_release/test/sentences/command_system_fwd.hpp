@@ -13,7 +13,7 @@
 
 #include <adobe/config.hpp>
 
-#include <adobe/future/enum_ops.hpp>
+#include <adobe/enum_ops.hpp>
 #include <adobe/name.hpp>
 
 /**************************************************************************************************/

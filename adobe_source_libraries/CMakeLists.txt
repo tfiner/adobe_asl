@@ -5,9 +5,6 @@ project (asl)
 # set(Boost_DEBUG 1)
 # set(Boost_DETAILED_FAILURE_MSG 1) 
 find_package( Boost REQUIRED COMPONENTS thread signals )
-message( STATUS "Boost include: ${Boost_INCLUDE_DIR}" )
-message( STATUS "Boost defines: ${Boost_DEFINITIONS}" )
-message( STATUS "Boost libs:    ${Boost_LIBRARIES}" )
 
 # Used to include FindTBB.cmake
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
@@ -16,17 +13,6 @@ find_package( TBB )
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 include_directories( SYSTEM ${TBB_INCLUDE_DIRS} )
-
-set(CMAKE_CXX_FLAGS "-std=c++11 ${Boost_DEFINITIONS} -DADOBE_STD_SERIALIZATION" )
-
-# Because Carbon/64 has some different Navigation API calls.
-if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
-   message( STATUS "OS X: forcing 32 bit build" )
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
-endif()
-
-set(CMAKE_CXX_FLAGS_DEBUG "-DTBB_USE_DEBUG -g -O0")
-set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
 
 set(SRCS 
         source/adam.cpp

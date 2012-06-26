@@ -8,24 +8,14 @@ find_package( Boost REQUIRED COMPONENTS
     unit_test_framework filesystem system program_options 
 )
 
-message( "ASL_ROOT = ${ASL_ROOT}")
+find_package( TBB )
+
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories( ${ASL_SRC_LIBS} )
 include_directories( ${ASL_PLAT_REL} )
 
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
-
-set(CMAKE_CXX_FLAGS "-std=c++11 ${Boost_DEFINITIONS} -DADOBE_STD_SERIALIZATION -DBOOST_TEST_DYN_LINK" )
-
-# Because Carbon/64 has some different Navigation API calls.
-if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
-   message( STATUS "OS X: forcing 32 bit build" )
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
-endif()
-
-set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
-set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
-
+include_directories( SYSTEM ${TBB_INCLUDE_DIRS} )
 
 # These are all standalone, speedy tests with a main.cpp.
 # -------------------------------------------------------
