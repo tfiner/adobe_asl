@@ -4,13 +4,10 @@ project (apl-test)
 
 find_package( Boost REQUIRED COMPONENTS filesystem signals system unit_test_framework )
 
-# Used to include FindTBB.cmake
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
-find_package( TBB )
-
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories( ${ASL_PLAT_REL} )
 include_directories( ${ASL_PLAT_REL}/adobe )
+include_directories( ${ASL_PLAT_REL}/macintosh )
 include_directories( ${ASL_SRC_LIBS} )
 include_directories( SYSTEM ${Boost_INCLUDE_DIRS} )
 include_directories( SYSTEM ${TBB_INCLUDE_DIRS} )
@@ -26,30 +23,30 @@ endif()
 # -------------------------------------------------------
 set(TESTS
     function_pack
-    notify_on_write 
+#    modal_dialog_interface
+    notify_on_write
+    property_model_tidy 
     rset
     selection_ops 
     sequence_model 
     sequence_mvc_muldex 
     xml_to_forest 
     xstr_bench
+    xstr_test
 )
+
+# Running from the test's source dir eliminates the need to copy any files.
 foreach(TEST ${TESTS})
     add_executable( ${TEST} ${TEST}/main.cpp) 
     target_link_libraries( ${TEST} apl ${Boost_LIBRARIES} )
-    add_test(${TEST} ${CMAKE_CURRENT_BINARY_DIR}/${TEST})
+    add_test(
+        NAME ${TEST} 
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${TEST}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${TEST} )
 endforeach()
 
-add_executable (xstr_test xstr_test/main.cpp) 
-target_link_libraries( xstr_test apl ${Boost_LIBRARIES} )
-file(COPY xstr_test/default.xstr DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/test_files/xstr_test" )
-ADD_TEST(
-    NAME xstr_test 
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_files/xstr_test
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/xstr_test
-)
-
-# In progress
+# In progress, eh, looks like this one needs too much work to get compiled.
+# I think it just needs revamping with boost::concepts.
 # add_executable (sentences 
 #    sentences/main.cpp
 #    sentences/command_system.cpp

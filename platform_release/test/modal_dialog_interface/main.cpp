@@ -208,8 +208,8 @@ try
     if (argc > 2)
     {
         std::string db_name(argv[2]);
-        boost::filesystem::path eve_path((db_name + ".eve").c_str(), boost::filesystem::native);
-        boost::filesystem::path adam_path((db_name + ".adm").c_str(), boost::filesystem::native);
+        boost::filesystem::path eve_path((db_name + ".eve").c_str());
+        boost::filesystem::path adam_path((db_name + ".adm").c_str());
 
         boost::filesystem::ifstream eve_stream(eve_path);
         boost::filesystem::ifstream adam_stream(adam_path);

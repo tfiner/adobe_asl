@@ -5,6 +5,14 @@ ENABLE_TESTING()
 message( STATUS "CMake detected OS '${CMAKE_SYSTEM_NAME}'" )
 message( STATUS "Build type - ${CMAKE_BUILD_TYPE}")
 
+
+# Used to include FindTBB.cmake
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+
+# Not every sub project needs TBB, but this just finds and sets up the
+# variables that can then be referenced by deeper builds.
+find_package( TBB )
+
 set(CMAKE_CXX_FLAGS 
     "-std=c++11 -DADOBE_STD_SERIALIZATION -DBOOST_TEST_DYN_LINK" )
 

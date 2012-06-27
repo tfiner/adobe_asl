@@ -54,16 +54,25 @@ void usage()
 int main(int argc, char** argv)
 try
 {
-    if (argc < 2)
+    bool disassemble_only(false);
+    if ( argc > 1 )
+        disassemble_only = std::strcmp(argv[1], "-d") == 0;
+
+    std::string filename("testfile.adm");
+    if ( argc > 1 && !disassemble_only )
+        filename = argv[1];
+
+    else if ( argc >= 2 && disassemble_only )
+        filename = argv[2];
+
+    if ( filename.empty() )
         usage();
 
-    bool          disassemble_only(std::strcmp(argv[1], "-d") == 0);
-    const char*   filename(argv[disassemble_only ? 2 : 1]);
-    std::ifstream input(filename);
+    std::ifstream input(filename.c_str());
 
     if (!input.is_open())
         throw std::runtime_error(adobe::make_string("Input file ",
-                                                    filename,
+                                                    filename.c_str(),
                                                     " could not be opened for read."));
 
     try
@@ -74,7 +83,7 @@ try
                                                                         _2)));
 
         adobe::sheet_assembly_t assy(adobe::disassemble_sheet(input,
-                                                       adobe::line_position_t(adobe::name_t(filename),
+                                                       adobe::line_position_t(adobe::name_t(filename.c_str()),
                                                                               getline_proc)));
 
         if (disassemble_only)

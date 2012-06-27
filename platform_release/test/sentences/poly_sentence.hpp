@@ -42,15 +42,15 @@ struct poly_sentence_interface : poly_copyable_interface
 \ref adobe::UnarySentenceConcept 
 */
 template <typename T>
-ADOBE_REQUIRES(adobe::UnarySentenceConcept<T>)
 struct poly_sentence_instance : optimized_storage_type<T, poly_sentence_interface>::type
 {
+    ADOBE_REQUIRES(adobe::UnarySentenceConcept<T>);
     ADOBE_CLASS_REQUIRE(T, adobe, UnarySentenceConcept);
 
     poly_sentence_instance(const T& x) :
         optimized_storage_type<T, poly_sentence_interface>::type(x) { }
-    poly_sentence_instance(poly_sentence_instance& x, move_ctor m) :
-        optimized_storage_type<T, poly_sentence_interface>::type(x, m) { }
+    // poly_sentence_instance(poly_sentence_instance& x, move_ctor m) :
+    //     optimized_storage_type<T, poly_sentence_interface>::type(x, m) { }
 
     bool test_subject(const poly_subject_t& subject)
     {
@@ -75,8 +75,8 @@ struct unary_sentence : public poly_base<poly_sentence_interface, poly_sentence_
         poly_base<poly_sentence_interface, poly_sentence_instance>(s) { }
 
     /// mctor
-    unary_sentence(unary_sentence& x, move_ctor m) :
-        poly_base<poly_sentence_interface, poly_sentence_instance>(x, m) { }
+    // unary_sentence(unary_sentence& x, move_ctor m) :
+    //     poly_base<poly_sentence_interface, poly_sentence_instance>(x, m) { }
 
     template <typename V>
     bool test_subject(const V& subject)
@@ -106,16 +106,16 @@ struct poly_binary_sentence_interface : public poly_sentence_interface
 \ref adobe::BinarySentenceConcept 
 */
 template <typename T>
-ADOBE_REQUIRES(BinarySentenceConcept<T>)
 struct poly_binary_sentence_instance : optimized_storage_type<T, poly_binary_sentence_interface>::type
 {
+    ADOBE_REQUIRES(BinarySentenceConcept<T>);
     ADOBE_CLASS_REQUIRE(T, adobe, BinarySentenceConcept);
 
     poly_binary_sentence_instance(const T& x) :
         optimized_storage_type<T, poly_binary_sentence_interface>::type(x) { }
 
-    poly_binary_sentence_instance(poly_binary_sentence_instance& x, move_ctor m) :
-        optimized_storage_type<T, poly_binary_sentence_interface>::type(x, m) { }
+    // poly_binary_sentence_instance(poly_binary_sentence_instance& x, move_ctor m) :
+    //     optimized_storage_type<T, poly_binary_sentence_interface>::type(x, m) { }
 
     bool test_subject(const poly_subject_t& subject)
     {
@@ -154,8 +154,8 @@ struct binary_sentence
         poly_base<poly_binary_sentence_interface, poly_binary_sentence_instance>(s) { }
 
     /// mctor
-    binary_sentence(binary_sentence& x, move_ctor m) :
-        poly_base<poly_binary_sentence_interface, poly_binary_sentence_instance>(x, m) { }
+    // binary_sentence(binary_sentence& x, move_ctor m) :
+    //     poly_base<poly_binary_sentence_interface, poly_binary_sentence_instance>(x, m) { }
 
     template <typename V>
     bool test_subject(const V& subject)

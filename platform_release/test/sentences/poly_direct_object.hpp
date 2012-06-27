@@ -39,9 +39,10 @@ struct poly_direct_object_instance : optimized_storage_type<T, poly_direct_objec
     poly_direct_object_instance(const T& x) :
         optimized_storage_type<T, poly_direct_object_interface>::type(x) { }
 
+/*
     poly_direct_object_instance(poly_direct_object_instance& x, move_ctor m) :
         optimized_storage_type<T, poly_direct_object_interface>::type(x, m) {}
-
+*/
     any_regular_t project() const
     { return any_regular_t(DirectObjectConcept<T>::project(this->get())); }
 };
@@ -54,10 +55,12 @@ struct direct_object : poly_base<poly_direct_object_interface, poly_direct_objec
     explicit direct_object(const T& s) :
         poly_base<poly_direct_object_interface, poly_direct_object_instance>(s) { }
 
+/*
     /// mctor
     direct_object(direct_object& x, move_ctor m) :
         poly_base<poly_direct_object_interface, poly_direct_object_instance>(x, m) { }
-
+*/
+        
     any_regular_t project() const
     { return interface_ref().project(); }
 };

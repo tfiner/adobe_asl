@@ -139,12 +139,12 @@ bool evaluate_prerequisite_expression(const adobe::array_t& expression, const ad
     static adobe::virtual_machine_t vm_s;
 
     vm_s.set_array_function_lookup(boost::bind(&array_function, _1, _2, boost::ref(attributes)));
-    vm_s.set_simple_variable_lookup(boost::bind(&simple_variable_lookup, _1, boost::ref(attributes)));
+    vm_s.set_variable_lookup(boost::bind(&simple_variable_lookup, _1, boost::ref(attributes)));
     vm_s.evaluate(expression);
 
     bool success(false);
 
-    vm_s.back().value_m.cast(success);
+    vm_s.back().cast(success);
     vm_s.pop_back();
 
     return success;

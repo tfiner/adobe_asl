@@ -40,9 +40,10 @@ struct poly_subject_instance : optimized_storage_type<T, poly_subject_interface>
     poly_subject_instance(const T& x) :
         optimized_storage_type<T, poly_subject_interface>::type(x) { }
 
+/*  tfiner : I'm not familiar enough (yet) with the new move && ctor.
     poly_subject_instance(poly_subject_instance& x, move_ctor m) :
         optimized_storage_type<T, poly_subject_interface>::type(x, m) { }
-
+*/
     any_regular_t project() const
     {
         return any_regular_t(SubjectConcept<T>::project(this->get()));
@@ -58,9 +59,10 @@ struct subject : poly_base<poly_subject_interface, poly_subject_instance>
         poly_base<poly_subject_interface, poly_subject_instance>(s) { }
 
     /// mctor
+/*  tfiner : I'm not familiar enough yet with move ctors.
     subject(subject& x, move_ctor m) :
         poly_base<poly_subject_interface, poly_subject_instance>(x, m) { }
-
+*/
     any_regular_t project() const
     { return interface_ref().project(); }
 };

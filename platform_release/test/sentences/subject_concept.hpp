@@ -22,17 +22,11 @@ namespace adobe {
 
 /*************************************************************************************************/
 
-#ifdef ADOBE_HAS_CPLUS0X_CONCEPTS
 
 /*************************************************************************************************/
 
-auto concept SubjectConcept<typename Subject> 
-//: RegularConcept<Subject> -- Subjects not yet regular
-: std::CopyConstructible<Subject>
-{
-    template subject_type;
-    subject_type project(Subject& v) const;
-};
+
+#ifdef ADOBE_HAS_CPLUS0X_CONCEPTS
 
 /*************************************************************************************************/
 
@@ -86,8 +80,14 @@ inline typename subject_type<S>::type project(const S& v)
 #endif
 /*************************************************************************************************/
 
+#define ADOBE_CLASS_REQUIRE(T, ns, CONCEPT) \
+    BOOST_CONCEPT_ASSERT((CONCEPT<T>));
+
+#define ADOBE_REQUIRES(CONCEPT) \
+    BOOST_CONCEPT_ASSERT((CONCEPT))
+
 template <class T>
-struct SubjectConcept
+struct SubjectConcept : boost::CopyConstructible<T>
 {
     typedef typename subject_type<T>::type subject_type; 
 
