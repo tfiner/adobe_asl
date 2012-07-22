@@ -39,3 +39,7 @@ add_subdirectory(${ASL_SRC_LIBS}/test)
 add_subdirectory(${ASL_SRC_LIBS}/test/unit_tests)
 add_subdirectory(${ASL_PLAT_REL})
 add_subdirectory(${ASL_PLAT_REL}/test)
+
+# Individual OS X apps have all kinds of their own customizations, and 
+#their own CMakeLists.txt
+add_subdirectory(${ASL_PLAT_REL}/test/modal_dialog_interface)
