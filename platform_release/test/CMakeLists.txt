@@ -43,6 +43,7 @@ foreach(TEST ${TESTS})
         NAME ${TEST} 
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${TEST}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${TEST} )
+    set_property(TARGET ${TEST} PROPERTY FOLDER "apl_test")
 endforeach()
 
 # In progress, eh, looks like this one needs too much work to get compiled.

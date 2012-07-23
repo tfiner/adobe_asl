@@ -28,6 +28,7 @@ foreach(TEST ${TESTS})
     add_executable( ${TEST} ${TEST}/main.cpp) 
     target_link_libraries( ${TEST} asl ${Boost_LIBRARIES} )
     add_test(${TEST} ${CMAKE_CURRENT_BINARY_DIR}/${TEST})
+    set_property(TARGET ${TEST} PROPERTY FOLDER "asl_tests")
 endforeach()
 
 # Tests that require some kind of input files.
@@ -38,12 +39,15 @@ add_executable (adam_smoke adam_smoke/adam_smoke_test.cpp)
 target_link_libraries( adam_smoke asl ${Boost_LIBRARIES} )
 file(COPY adam_smoke DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/test_files" FILES_MATCHING PATTERN "rtd*" )
 ADD_TEST(adam_smoke ${CMAKE_CURRENT_BINARY_DIR}/adam_smoke test_files/adam_smoke/rtd)
+set_property(TARGET adam_smoke PROPERTY FOLDER "asl_tests")
 
 # Adam Tutorial it's interactive and not really a test.
 # It expects the input.cel and default.adm in it's cwd or it aborts.
 add_executable (adam_tutorial adam_tutorial/main.cpp) 
 target_link_libraries( adam_tutorial asl ${Boost_LIBRARIES} )
 file(COPY adam_tutorial/input.cel adam_tutorial/default.adm DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/test_files/adam_tutorial" )
+set_property(TARGET adam_tutorial PROPERTY FOLDER "asl_apps")
+
 #ADD_TEST(
 #    NAME adam_tutorial 
 #    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/test_files/adam_tutorial"
@@ -58,6 +62,7 @@ ADD_TEST(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_files/eve_smoke
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/eve_smoke
 )
+set_property(TARGET eve_smoke PROPERTY FOLDER "asl_tests")
 
 # Property Model
 add_executable (
@@ -77,11 +82,14 @@ ADD_TEST(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_files/property_model_eval
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/property_model_eval *pme
 )
+set_property(TARGET property_model_eval PROPERTY FOLDER "asl_tests")
 
 # Sudoku!  I'm really impressed by this one.  It's not an automated test though.
 add_executable (sudoku sudoku/main.cpp) 
 target_link_libraries( sudoku asl ${Boost_LIBRARIES} )
 file(COPY sudoku/sudokus.txt DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/test_files/sudoku" )
+set_property(TARGET sudoku PROPERTY FOLDER "asl_apps")
+
 # ADD_TEST(
 #    NAME sudoku 
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test_files/sudoku
@@ -93,6 +101,7 @@ file(COPY sudoku/sudokus.txt DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/test_files
 add_executable (expression_filter expression_filter/main.cpp) 
 target_link_libraries( expression_filter asl apl ${Boost_LIBRARIES} )
 ADD_TEST(expression_filter ${CMAKE_CURRENT_BINARY_DIR}/expression_filter)
+set_property(TARGET expression_filter PROPERTY FOLDER "asl_tests")
 
 # These need another target like "slow-tests"
 #set(SLOW_TESTS dictionary_benchmark n_queens)

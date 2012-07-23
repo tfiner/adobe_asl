@@ -38,7 +38,7 @@ class external_model_t : boost::noncopyable
 {
  public:
     
-    typedef boost::signals::connection connection_t;
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection connection_t;
 	typedef boost::function<void (const any_regular_t&)> monitor_t;
     
     void add_cell(name_t);

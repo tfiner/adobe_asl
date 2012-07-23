@@ -57,5 +57,9 @@ set(SRCS
         source/zuid_uuid.cpp
 )
 
+
 add_library(asl SHARED ${SRCS} )
+set_property(TARGET asl PROPERTY FOLDER "libs")
+
 target_link_libraries( asl ${TBB_LIBRARY} ${Boost_LIBRARIES} )
+

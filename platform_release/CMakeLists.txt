@@ -155,4 +155,5 @@ endif()
 
 add_library(apl SHARED ${ALL_SRC} )
 target_link_libraries( apl asl ${TBB_LIBRARY} ${Boost_LIBRARIES} )
+set_property(TARGET apl PROPERTY FOLDER "libs")
 

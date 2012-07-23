@@ -13,6 +13,7 @@
 #include <boost/bind.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/function.hpp>
+#include <boost/signal.hpp>
 
 #include <adobe/algorithm/find.hpp>
 #include <adobe/algorithm/for_each.hpp>

@@ -15,13 +15,12 @@
 
 #include <boost/utility.hpp>
 #include <boost/function.hpp>
+#include <boost/signals/connection.hpp>
 
 #ifdef __MWERKS__
     #pragma warn_unusedarg off
     #pragma warn_unusedvar off
 #endif
-
-#include <boost/signals.hpp>
 
 #ifdef __MWERKS__
     #pragma warn_unusedarg reset
@@ -93,7 +92,7 @@ class sheet_t : boost::noncopyable
   prevent communication between objects being destroyed.
 */
 
-    typedef boost::signals::connection                   connection_t;
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection                   connection_t;
      
  #if !defined(ADOBE_NO_DOCUMENTATION)
     sheet_t();

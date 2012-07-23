@@ -27,6 +27,7 @@ foreach(TEST ${ATESTS})
     add_executable( ${UNIT_TEST} algorithm/${TEST}/${TEST}_test.cpp) 
     target_link_libraries( ${UNIT_TEST} asl ${Boost_LIBRARIES} )
     add_test(${TEST} ${CMAKE_CURRENT_BINARY_DIR}/${UNIT_TEST})
+    set_property(TARGET ${UNIT_TEST} PROPERTY FOLDER "asl_unit_tests")
 endforeach()
 
 set(TESTS 
@@ -37,4 +38,5 @@ foreach(TEST ${TESTS})
     add_executable( ${UNIT_TEST} ${TEST}/${TEST}_test.cpp) 
     target_link_libraries( ${UNIT_TEST} asl ${Boost_LIBRARIES} )
     add_test(${TEST} ${CMAKE_CURRENT_BINARY_DIR}/${UNIT_TEST})
+    set_property(TARGET ${UNIT_TEST} PROPERTY FOLDER "asl_unit_tests")
 endforeach()
