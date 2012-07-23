@@ -58,8 +58,9 @@ set(SRCS
 )
 
 
-add_library(asl SHARED ${SRCS} )
+# add_library(asl SHARED ${SRCS} )
+add_library(asl STATIC ${SRCS} )
 set_property(TARGET asl PROPERTY FOLDER "libs")
 
-target_link_libraries( asl ${TBB_LIBRARY} ${Boost_LIBRARIES} )
+target_link_libraries( asl ${TBB_LIBRARY_DEBUG} ${Boost_LIBRARIES} )
 
